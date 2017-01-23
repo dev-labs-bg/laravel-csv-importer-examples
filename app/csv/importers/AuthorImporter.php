@@ -4,7 +4,12 @@ class AuthorImporter extends CSVImporter
 {
     public $file = 'authors.csv';
     protected $model = 'Author';
+
+    // TODO <Yavor>: Add inline documentation for this.
     protected $primary_key = ['id' => 'csv_id'];
+
+    // TODO <Yavor>: Add inline documentation for this.
+    protected $cache_key = ['id' => 'csv_id'];
 
     // Format: 'csv_column' => ['name' => 'table_column',
     //                          'processors' => ['processor_name' => 'parameters'],
@@ -34,7 +39,6 @@ class AuthorImporter extends CSVImporter
             },
         ];
     }
-
 
     protected function update($row, $o)
     {
