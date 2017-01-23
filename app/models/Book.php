@@ -2,6 +2,7 @@
 
 class Book extends Eloquent
 {
+    use YavorIvanov\CsvImporter\CSVReferenceTrait;
     protected $table = 'books';
 
     public function keywords()
