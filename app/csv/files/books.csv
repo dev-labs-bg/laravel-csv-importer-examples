@@ -1,8 +1,8 @@
-id,author,title,"release date",ISBN,genre
-1,1, "Anna Karenina",1877,978-1-84749-059-9, "realist novel"
-2,2, "Madame Bovary",1856,978-1-93349-918-5," "Realist novel, Erotic literature""
-3,1, "War and Peace",1869,978-5-04000-053-1, "Historic novel"
-4,3, "The Adventures of Huckleberry Finn",1884,978-1-10162-827-0, "Satirical novel"
-5,4, "Middlemarch",1871,978-1-50061-236-8, "Novel"
-6,5, "Moby-Dick",1851,978-0-74606-276-0, "Adventure fiction"
-7,6, "Great Expectations",1861,978-1-50107-544-5, "Novel"
+id,author,title,"release date",ISBN
+1,1, "Anna Karenina",1877,978-1-84749-059-9
+2,2, "Madame Bovary",1856,978-1-93349-918-5
+3,1, "War and Peace",1869,978-5-04000-053-1
+4,3, "The Adventures of Huckleberry Finn",1884,978-1-10162-827-0
+5,4, "Middlemarch",1871,978-1-50061-236-8
+6,5, "Moby-Dick",1851,978-0-74606-276-0
+7,6, "Great Expectations",1861,978-1-50107-544-5
