@@ -2,7 +2,7 @@
 
 class Book extends Eloquent
 {
-    protected $table = 'book';
+    protected $table = 'books';
 
     public function keywords()
     {
