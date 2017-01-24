@@ -1,10 +1,9 @@
 <?php
 
-class Author extends Eloquent
+class Genre extends Eloquent
 {
     use YavorIvanov\CsvImporter\CSVReferenceTrait;
-
-    protected $table = 'authors';
+    protected $table = 'genres';
 
     public function books()
     {

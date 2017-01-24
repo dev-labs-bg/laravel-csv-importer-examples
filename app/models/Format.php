@@ -1,10 +1,9 @@
 <?php
 
-class Author extends Eloquent
+class Format extends Eloquent
 {
     use YavorIvanov\CsvImporter\CSVReferenceTrait;
-
-    protected $table = 'authors';
+    protected $table = 'formats';
 
     public function books()
     {

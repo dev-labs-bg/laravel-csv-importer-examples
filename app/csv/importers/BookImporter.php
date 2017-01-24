@@ -51,22 +51,25 @@ class BookImporter extends CSVImporter
     {
         $o->csv_id = $row['id'];
         $o->title = $row["title"];
-        /* $o->authors = $this->get_from_context('author', $row["author"]); */
         $o->ISBN = $row['ISBN'];
         $o->release_date = $row["release date"];
         $o->genre = 1; // FIXME <Yavor>: This is now a pivot.
         $o->save();
+        $author = $this->get_from_context('author', $row["author"]);
+        $book->authors()->sync([$author->id], false);
     }
 
     protected function import_row($row)
     {
-        return Book::create([
+        $book = Book::create([
             'title' => $row["title"],
-            /* 'authors' => $this->get_from_context('author', $row["author"]), */
             'release_date' => $row["release date"],
             'ISBN' => $row['ISBN'],
             'genre' => 1, // FIXME <Yavor>: This is now a pivot.
             'csv_id' => $row['id'],
         ]);
+        $author = $this->get_from_context('author', $row["author"]);
+        $book->authors()->sync([$author->id], false);
+        return $book;
     }
 }

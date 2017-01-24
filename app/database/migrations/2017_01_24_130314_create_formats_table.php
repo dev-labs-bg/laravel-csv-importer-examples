@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateKeywordsTable extends Migration {
+class CreateFormatsTable extends Migration {
 
     /**
      * Run the migrations.
@@ -12,10 +12,10 @@ class CreateKeywordsTable extends Migration {
      */
     public function up()
     {
-        Schema::create('keywords', function(Blueprint $t)
+        Schema::create('formats', function(Blueprint $t)
         {
             $t->increments('id');
-            $t->string('name');
+            $t->string('type');
             $t->integer('csv_id');
             $t->timestamps();
         });
@@ -28,7 +28,7 @@ class CreateKeywordsTable extends Migration {
      */
     public function down()
     {
-        Schema::drop('keywords');
+        Schema::drop('formats');
     }
 
 }

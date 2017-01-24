@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBookKeyword extends Migration {
+class CreateBookFormat extends Migration {
 
     /**
      * Run the migrations.
@@ -12,11 +12,11 @@ class CreateBookKeyword extends Migration {
      */
     public function up()
     {
-        Schema::create('book_keyword', function(Blueprint $t)
+        Schema::create('book_format', function(Blueprint $t)
         {
             $t->increments('id');
             $t->integer('book_id');
-            $t->integer('keyword_id');
+            $t->integer('format_id');
             $t->timestamps();
         });
     }
@@ -28,7 +28,7 @@ class CreateBookKeyword extends Migration {
      */
     public function down()
     {
-        Schema::drop('book_keyword');
+        Schema::drop('book_format');
     }
 
 }
