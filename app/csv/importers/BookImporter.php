@@ -8,7 +8,18 @@ class BookImporter extends CSVImporter
     // TODO <Yavor>: Add inline documentation for this.
     protected $primary_key = ['id' => 'csv_id'];
 
-    // TODO <Yavor>: Add inline documentation for this.
+    // The importer selects all rows from the models tables in the beginning of the
+    // import and caches them according to a unique CSV column. There are two reasons
+    // why you may want this:
+    //   1) The importer will skip over csv rows that are already in the database.
+    //      The importer can check if each CSV record has a corresponding record in
+    //      the database table by using the csv column value as a hash key to the cache.
+    //
+    //   2) You will be able to reference previous rows in the CSV.
+    //      You can use the 'get_from_cache($hash)' function to retrieve the model
+    //      instance which is cached by that key. This is useful when importing
+    //      self-referential CSVs; for example a tree structure in the following format:
+    //      [id, name, parent_id]
     protected $cache_key = ['id' => 'csv_id'];
 
     // A list of dependencies to import before attemting to run this importer.
@@ -66,6 +77,18 @@ class BookImporter extends CSVImporter
             'ISBN' => $row['ISBN'],
             'csv_id' => $row['id'],
         ]);
+
+        // You may reference model instances from your importer's dependencies
+        // with the 'get_from_context()' function. The format is:
+        //
+        //   get_from_context('dep_name', 'value')
+        //
+        // You can think of the context as a copy of the cache of all dependencies
+        // your importer has. The context hash is keyed by whatever the $foreign_key is
+        // set on the dependency you're referencing. If no $foreign_key is declared, the
+        // context is keyed by the $cache_key instead.
+        // Note: The csv_column values are used as the cache key in both cases.
+        // (This works just like the regular model caching.)
         $author = $this->get_from_context('author', $row["author"]);
         $book->authors()->sync([$author->id], false);
         return $book;
