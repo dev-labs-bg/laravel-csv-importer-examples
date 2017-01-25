@@ -34,7 +34,8 @@ class BookGenreExporter extends CSVExporter
     ];
 
     // The exporter checks for the existence of a model() function and will call
-    // it and use its results instead of selecting the whole model table (ModelName::all()).
+    // it and use its results instead of selecting the whole model table (ModelName::all()),
+    // or using the $model property.
     //
     // In this example, we want to prefetch the genres relationship, to avoid additional queries.
     public function model()
