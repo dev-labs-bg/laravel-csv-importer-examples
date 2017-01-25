@@ -64,7 +64,6 @@ class BookImporter extends CSVImporter
             'title' => $row["title"],
             'release_date' => $row["release date"],
             'ISBN' => $row['ISBN'],
-            'genre' => 1, // FIXME <Yavor>: This is now a pivot.
             'csv_id' => $row['id'],
         ]);
         $author = $this->get_from_context('author', $row["author"]);
