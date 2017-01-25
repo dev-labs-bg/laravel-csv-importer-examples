@@ -15,7 +15,7 @@ class CreateAuthorsTable extends Migration
             $t->enum('gender', ['m', 'f']);
             $t->date('date_of_birth');
             $t->string('country_code');
-            $t->integer('csv_id');
+            $t->integer('csv_id')->unique();
             $t->timestamps();
         });
     }

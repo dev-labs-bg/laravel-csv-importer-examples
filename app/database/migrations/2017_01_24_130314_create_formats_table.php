@@ -16,7 +16,7 @@ class CreateFormatsTable extends Migration {
         {
             $t->increments('id');
             $t->string('type');
-            $t->integer('csv_id');
+            $t->integer('csv_id')->unique();
             $t->timestamps();
         });
     }

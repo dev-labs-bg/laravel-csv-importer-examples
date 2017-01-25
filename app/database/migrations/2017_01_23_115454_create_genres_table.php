@@ -16,7 +16,7 @@ class CreateGenresTable extends Migration {
         {
             $t->increments('id');
             $t->string('name');
-            $t->integer('csv_id');
+            $t->integer('csv_id')->unique();
             $t->timestamps();
         });
     }
