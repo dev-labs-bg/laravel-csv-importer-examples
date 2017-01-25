@@ -18,7 +18,6 @@ class CreateBooksTable extends Migration {
             $t->string('title');
             $t->string('ISBN');
             $t->date('release_date');
-            $t->string('genre');
             $t->integer('csv_id');
             $t->timestamps();
         });
