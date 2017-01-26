@@ -3,15 +3,12 @@ This repository contains examples on how to use the [Laravel CSV Importer packag
 
 # Getting started
 
-1. First, clone the repository:
-    `git clone git@github.com:Yavor-Ivanov/laravel-csv-importer-examples.git`
-2. Navigate to the project directory
-    `cd laravel-csv-importer-examples`
-3. Install dependencies via composer
-    `composer update`
-4. Run the migrations
-    `php artisan migrate`
-5. You're all set!
+1. First, clone the repository: `git clone git@github.com:Yavor-Ivanov/laravel-csv-importer-examples.git`
+2. Navigate to the project directory: `cd laravel-csv-importer-examples`
+3. Install dependencies via composer: `composer update`
+4. Create the database: `touch app/database/production.sqlite`
+5. Run the migrations: `php artisan migrate`
+6. You're all set!
 
 You can now import/export by running the following commands:
   - `php artisan csv:import importer_name`
