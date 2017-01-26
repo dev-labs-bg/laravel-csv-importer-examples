@@ -1,25 +1,115 @@
-## Laravel PHP Framework
+# About
+This repository contains examples on how to use the [Laravel CSV Importer package](https://github.com/Yavor-Ivanov/laravel-csv-importer). The repository contains a working copy of a Laravel 4 applictaion with the csv importer package already added as a dependency. All importers/exporters contain inline documentation about their inner workings.
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/downloads.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+# Getting started
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, and caching.
+1. First, clone the repository:
+    `git clone git@github.com:Yavor-Ivanov/laravel-csv-importer-examples.git`
+2. Navigate to the project directory
+    `cd laravel-csv-importer-examples`
+3. Install dependencies via composer
+    `composer update`
+4. Run the migrations
+    `php artisan migrate`
+5. You're all set!
 
-Laravel aims to make the development process a pleasing one for the developer without sacrificing application functionality. Happy developers make the best code. To this end, we've attempted to combine the very best of what we have seen in other web frameworks, including frameworks implemented in other languages, such as Ruby on Rails, ASP.NET MVC, and Sinatra.
+You can now import/export by running the following commands:
+  - `php artisan csv:import importer_name`
+  - `php artisan csv:export exporter_name`
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+Valid importer/exporter names are: `book`, `author`, `genre`, `format`, `bookformat`, `bookgenre`
 
-## Official Documentation
+For more information on the command syntax, refer to the [documentation](https://github.com/Yavor-Ivanov/laravel-csv-importer/blob/master/README.md#commands).
 
-Documentation for the entire framework can be found on the [Laravel website](http://laravel.com/docs).
+# Directory structure
+I've elected to include all Laravel files in the repository, as it greatly simplifies the installation steps (there is zero configuration needed). The tradeoff is this makes the task of finding files you may wish to modify, or take a look at, harder. Below, I've included a list of all files added (or modified):
+```
+└── app
+    ├── config
+    │   ├── database.php
+    ├── csv
+    │   ├── exporters
+    │   │   ├── AuthorExporter.php
+    │   │   ├── BookExporter.php
+    │   │   ├── BookFormatExporter.php
+    │   │   ├── BookGenreExporter.php
+    │   │   ├── FormatExporter.php
+    │   │   └── GenreExporter.php
+    │   ├── files
+    │   │   ├── backup
+    │   │   ├── authors.csv
+    │   │   ├── books.csv
+    │   │   ├── books_to_formats.csv
+    │   │   ├── books_to_genres.csv
+    │   │   ├── formats.csv
+    │   │   └── genres.csv
+    │   └── importers
+    │       ├── AuthorImporter.php
+    │       ├── BookFormatImporter.php
+    │       ├── BookGenreImporter.php
+    │       ├── BookImporter.php
+    │       ├── FormatImporter.php
+    │       └── GenreImporter.php
+    ├── database
+    │   └── migrations
+    │       ├── 2017_01_23_111459_create_authors_table.php
+    │       ├── 2017_01_23_115442_create_books_table.php
+    │       ├── 2017_01_23_115454_create_genres_table.php
+    │       ├── 2017_01_23_122851_create_author_book.php
+    │       ├── 2017_01_23_123127_create_book_genre.php
+    │       ├── 2017_01_23_135411_create_book_format.php
+    │       └── 2017_01_24_130314_create_formats_table.php
+    └── models
+        ├── Author.php
+        ├── BookFormatPivot.php
+        ├── BookGenrePivot.php
+        ├── Book.php
+        ├── Format.php
+        ├── Genre.php
+        └── User.php
+```
+The `app/config/database.php` file has been modified to write use SQLite by default. The file for the database is located at `app/database/production.sqlite`.
 
-### Contributing To Laravel
+# CSV files and Database Model
+There are 4 entities at play: `Authors`, `Books`, `Formats`, and `Genres`. Each have their models stored in the `app/models` folder, as well as additional pivot models (`BookGenrePivot` and `BookFormatPivot`), which are used when importing the many to many relationships between books and genres and books and formats.
 
-**All issues and pull requests should be filed on the [laravel/framework](http://github.com/laravel/framework) repository.**
+```
+       ┌────────────┐              ┌────────────┐
+       │            │              │            │
+       │            │  *         * │            │
+       │   Author   │◀════════════▶│    Book    │◀══╗
+       │            │              │            │   ║ *
+       │            │              │            │   ║
+       └────────────┘              └────────────┘   ║
+                                          ▲         ║
+                                          ║         ║
+                                          ║         ║
+                                        * ║         ║
+                      ╔═══════════════════╝         ║
+                      ║                             ║
+                      ║                             ║
+                    * ║                             ║
+                      ▼                             ║
+               ┌────────────┐                       ║   ┌────────────┐
+               │            │                       ║   │            │
+               │            │                       ║   │            │
+               │   Genre    │                     * ╚══▶│   Format   │
+               │            │                           │            │
+               │            │                           │            │
+               └────────────┘                           └────────────┘
+```
+  Database model *(Many to many relationships annotated with `*` to `*`)*
 
-### License
+Although all database table relationships are many to many, I've modelled them differently in the CSV files, to show off the different ways you may wish to reference records outside your current CSV file. For example, although the `author` <--> `book` relationship is many to many in the database, it is modelled as one to many in the `books.csv`.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+Another notable difference is the variable column many to many relationship in `books_to_genre.csv`, as opposed to the traditional two columns with no unique foreign keys:
+
+| book | genre 1 | genre 2 | 
+|------|---------|---------| 
+| 1    | 1       |         | 
+| 2    | 1       | 2       | 
+| 3    | 3       |         | 
+| 4    | 4       |         | 
+| 5    | 5       |         | 
+| 6    | 6       |         | 
+| 7    | 5       |         | 
