@@ -95,7 +95,7 @@ There are 4 entities at play: `Authors`, `Books`, `Formats`, and `Genres`. Each 
                │            │                           │            │
                └────────────┘                           └────────────┘
 ```
-  Database model *(Many to many relationships annotated with `*` to `*`)*
+  Database model *(Many to many relationships annotated with \* to \*)*
 
 Although all database table relationships are many to many, I've modelled them differently in the CSV files, to show off the different ways you may wish to reference records outside your current CSV file. For example, although the `author` <--> `book` relationship is many to many in the database, it is modelled as one to many in the `books.csv`.
 
