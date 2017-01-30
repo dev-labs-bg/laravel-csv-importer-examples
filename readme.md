@@ -1,5 +1,5 @@
 # About
-This repository contains examples on how to use the [Laravel CSV Importer package](https://github.com/Yavor-Ivanov/laravel-csv-importer). The repository contains a working copy of a Laravel 4 applictaion with the csv importer package already added as a dependency. All importers/exporters contain inline documentation about their inner workings.
+This repository contains examples on how to use the [Laravel CSV Importer package](https://github.com/dev-labs-bg/laravel-csv-importer). The repository contains a working copy of a Laravel 4 applictaion with the csv importer package already added as a dependency. All importers/exporters contain inline documentation about their inner workings.
 
 # Getting started
 
@@ -16,7 +16,7 @@ You can now import/export by running the following commands:
 
 Valid importer/exporter names are: `book`, `author`, `genre`, `format`, `bookformat`, `bookgenre`
 
-For more information on the command syntax, refer to the [documentation](https://github.com/Yavor-Ivanov/laravel-csv-importer/blob/master/README.md#commands).
+For more information on the command syntax, refer to the [documentation](https://github.com/dev-labs-bg/laravel-csv-importer/blob/master/README.md#commands).
 
 # Directory structure
 I've elected to include all Laravel files in the repository, as it greatly simplifies the installation steps (there is zero configuration needed). The tradeoff is this makes the task of finding files you may wish to modify, or take a look at, harder. Below, I've included a list of all files added (or modified):
