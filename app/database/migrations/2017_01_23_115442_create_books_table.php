@@ -17,7 +17,7 @@ class CreateBooksTable extends Migration {
             $t->increments('id');
             $t->string('title');
             $t->string('ISBN');
-            $t->date('release_date');
+            $t->dateTime('release_date');
             $t->integer('csv_id')->unique();
             $t->timestamps();
         });

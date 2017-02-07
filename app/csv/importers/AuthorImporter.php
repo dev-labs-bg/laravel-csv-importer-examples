@@ -40,21 +40,8 @@ class AuthorImporter extends CSVImporter
     // You can also omit parameters and use default values if the processor/validator
     // function has them.
     protected $column_mappings = [
-        'date of birth' => ['name' => 'date_of_birth', 'processors' => ['null_or_datetime' => 'F j, Y']],
+        'date of birth' => ['name' => 'date_of_birth', 'processors' => ['to_datetime' => 'F j, Y']],
     ];
-
-    protected function get_processors()
-    {
-        return [
-            'null_or_datetime' => function ($v, $fmt='Y-m-d')
-            {
-                $v = $this->process('string_to_null', $v);
-                if ($v == Null)
-                    return $v;
-                return $this->process('to_datetime', [$v, $fmt]);
-            },
-        ];
-    }
 
     protected function update($row, $o)
     {
@@ -69,12 +56,13 @@ class AuthorImporter extends CSVImporter
 
     protected function import_row($row)
     {
+        var_dump($row['date of birth']);
         return Author::create([
             'first_name'    => $row["first name"],
             'last_name'     => $row["last name"],
             'gender'        => $row["gender"],
             'country_code'  => $row["country"],
-            'date_of_birth' => $row["date of birth"],
+            'date_of_birth' => new DateTime($row["date of birth"]),
             'csv_id'        => $row['id'],
         ]);
     }

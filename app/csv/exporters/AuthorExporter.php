@@ -36,7 +36,7 @@ class AuthorExporter extends CSVExporter
         ['last_name' => 'last name'],
         'gender',
         ['country_code' => 'country'],
-        ['date_of_birth' => ['date of birth' => ['datetime_to_format' => 'F j, Y']]],
+        ['date_of_birth' => ['name' => 'date of birth', 'processors' => ['datetime_to_format' => 'F j, Y']]],
     ];
 
     protected function get_processors()

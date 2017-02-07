@@ -34,7 +34,7 @@ class BookExporter extends CSVExporter
         ['csv_id' => 'id'],
         ['authors()->first()->csv_id' => 'author'],
         'title',
-        ['release_date' => ['release date' => ['datetime_to_format' => 'Y']]],
+        ['release_date' => ['name' => 'release date', 'processors' => ['datetime_to_format' => 'Y']]],
         'ISBN',
     ];
 
