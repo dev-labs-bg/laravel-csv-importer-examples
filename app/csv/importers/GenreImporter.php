@@ -19,18 +19,23 @@ class GenreImporter extends CSVImporter
     //      [id, name, parent_id]
     protected $cache_key = ['id' => 'csv_id'];
 
-    protected function update($row, $o)
-    {
-        $o->csv_id = $row['id'];
-        $o->name = $row["name"];
-        $o->save();
-    }
-
-    protected function import_row($row)
-    {
-        return Genre::create([
-            'name' => $row["name"],
-            'csv_id' => $row['id'],
-        ]);
-    }
+    // Format: 'csv_column' => ['name' => 'table_column',
+    //                          'processors' => ['processor_name' => 'parameter'],
+    //                          'validators' => ['validator_name' => 'parameter']
+    //                          ]
+    // The processors and validators are optional.
+    // If you need to pass more than one parameters to a validator or
+    // processor, the format becomes:
+    //
+    // 'processor' => ['processor_name' => ['parameter1', 'parameter2']]
+    //
+    // You can also use more than one processor:
+    // 'processor' => ['processor1' => ['parameter1', 'parameter2'], 'processor2' => 'param', 'processor3']
+    //
+    // You can also omit parameters and use default values if the processor/validator
+    // function has them.
+    protected $column_mappings = [
+        ['csv_id' => 'id'],
+        'name',
+    ];
 }

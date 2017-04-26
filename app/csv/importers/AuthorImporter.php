@@ -40,30 +40,11 @@ class AuthorImporter extends CSVImporter
     // You can also omit parameters and use default values if the processor/validator
     // function has them.
     protected $column_mappings = [
-        'date of birth' => ['name' => 'date_of_birth', 'processors' => ['to_datetime' => 'F j, Y']],
+        ['csv_id' => 'id'],
+        ['first name' => 'first_name'],
+        ['last name' => 'last_name'],
+        'gender',
+        ['country' => 'country code'],
+        ['date of birth' => ['name' => 'date_of_birth', 'processors' => ['to_datetime' => 'F j, Y']]],
     ];
-
-    protected function update($row, $o)
-    {
-        $o->csv_id        = $row['id'];
-        $o->first_name    = $row["first name"];
-        $o->last_name     = $row["last name"];
-        $o->gender        = $row["gender"];
-        $o->country_code  = $row["country"];
-        $o->date_of_birth = $row["date of birth"];
-        $o->save();
-    }
-
-    protected function import_row($row)
-    {
-        var_dump($row['date of birth']);
-        return Author::create([
-            'first_name'    => $row["first name"],
-            'last_name'     => $row["last name"],
-            'gender'        => $row["gender"],
-            'country_code'  => $row["country"],
-            'date_of_birth' => new DateTime($row["date of birth"]),
-            'csv_id'        => $row['id'],
-        ]);
-    }
 }
