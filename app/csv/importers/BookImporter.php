@@ -29,20 +29,45 @@ class BookImporter extends CSVImporter
     // this importer can be referenced by adding 'book' in a $deps array.
     protected static $deps = ['author'];
 
-    // Format: 'csv_column' => ['name' => 'table_column',
+    // The importer reads these mappings and converts the CSV columns to the
+    // database table format. The full format for the column mappings is as follows:
+    //
+    // Format: ['csv_column' => ['name' => 'table_column',
     //                          'processors' => ['processor_name' => 'parameters'],
     //                          'validators' => ['validator_name' => 'parameters']
-    //                          ]
-    // The processors and validators are optional.
-    // If you need to pass more than one parameters to a validator or
-    // processor, the format becomes:
+    //                          ]]
+    //
+    // The processors and validators are optional. If you need to pass more than one
+    // parameters to a validator or processor, the format becomes:
     //
     // 'processor' => ['processor_name' => ['parameter1', 'parameter2']]
     //
     // You can also omit parameters and use default values if the processor/validator
     // function has them.
-    protected $column_mappings = [
-        'release date' => ['name' => 'release_date', 'processors' => ['null_or_datetime' => 'Y']],
+    //
+    // It's more common to only need a few options from the column mapping.
+    // In those cases you can omit what you don't need. Here are some examples of this:
+    //
+    //   - Mapping a csv column to a model property without preprocessing:
+    //     ['csv_column' => 'model_property'],
+    //   - Postprocessing without parameters (or defaults):
+    //     ['csv_column' => ['name' => 'model_property', 'processors' => 'pre-processor_name']],
+    //   - The model property name coincides with the csv column name:
+    //     'csv_column',
+    //   - Using multiple pre-processors with parameters:
+    //     ['csv_column' => ['name' => 'model_property' => [
+    //                             'processor1' => ['param1', 'param2'],
+    //                             'processor2' => 'single_param'
+    //     ]]],
+    //   - Multiple pre-processors without parameters:
+    //     ['csv_column' => ['name' => 'model_propetry' => ['processor1', 'processor2']]],
+    //
+    // The 'model_property' isn't restricted to just table colmuns. Model mutators are perfectly valid.
+    protected $column_mapping = [
+        ['id' => 'csv_id'],
+        'title',
+        'ISBN',
+        ['release date' => ['name' => 'release_date', 'processors' => ['null_or_datetime' => 'Y']]],
     ];
 
     protected function get_processors()
@@ -58,25 +83,33 @@ class BookImporter extends CSVImporter
         ];
     }
 
+    // The package uses the column mappings to figure out how to update/create the model.
+    // Yet, sometimes, the mappings aren't flexible enough.
+    //
+    // In such cases,you can override the import_row() and update() functions.
+    //
+    // update() gets passed a single CSV row and the corresponding model instance from
+    // the database. It expects a model instance to be returned.
+    //
+    // import_row() gets passed a single CSV row. It expects a new model instance to be returned.
+    //
+    // NOTE: If you choose to override these functions, the importer will not process
+    // the column mappings, upnless you call the parent::update() or parent::import_row() functions.
+    // This way you can mix custom row generation logic with column mappings, or skip the
+    // automatic mappnig entirely.
     protected function update($row, $o)
     {
-        $o->csv_id = $row['id'];
-        $o->title = $row["title"];
-        $o->ISBN = $row['ISBN'];
-        $o->release_date = $row["release date"];
+        $o = parent::update($row, $o);
         $o->save();
         $author = $this->get_from_context('author', $row["author"]);
-        $book->authors()->sync([$author->id], false);
+        $o->authors()->sync([$author->id], false);
+        return $o;
     }
 
     protected function import_row($row)
     {
-        $book = Book::create([
-            'title' => $row["title"],
-            'release_date' => $row["release date"],
-            'ISBN' => $row['ISBN'],
-            'csv_id' => $row['id'],
-        ]);
+        $o = parent::import_row($row);
+        $o->save();
 
         // You may reference model instances from your importer's dependencies
         // with the 'get_from_context()' function. The format is:
@@ -87,10 +120,11 @@ class BookImporter extends CSVImporter
         // your importer has. The context hash is keyed by whatever the $foreign_key is
         // set on the dependency you're referencing. If no $foreign_key is declared, the
         // context is keyed by the $cache_key instead.
+        //
         // Note: The csv_column values are used as the cache key in both cases.
         // (This works just like the regular model caching.)
         $author = $this->get_from_context('author', $row["author"]);
-        $book->authors()->sync([$author->id], false);
-        return $book;
+        $o->authors()->sync([$author->id], false);
+        return $o;
     }
 }

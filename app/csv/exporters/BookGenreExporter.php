@@ -53,7 +53,7 @@ class BookGenreExporter extends CSVExporter
     //
     // NOTE: If you choose to override this function, the exporter will not process
     // the column mappings, upnless you call the parent::generate_row() function.
-    // This way you can mix custom row generation logit with column mappings, or skip the
+    // This way you can mix custom row generation logic with column mappings, or skip the
     // automatic mappnig entirely.
     protected function generate_row($o)
     {
